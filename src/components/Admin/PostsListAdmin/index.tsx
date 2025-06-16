@@ -1,6 +1,7 @@
 import { findAllPostAdmin } from '@/lib/post/queries/admin';
 import clsx from 'clsx';
 import Link from 'next/link';
+import { DeletePostButton } from '../DeletePostButton';
 
 export default async function PostsListAdmin() {
   const posts = await findAllPostAdmin();
@@ -21,7 +22,7 @@ export default async function PostsListAdmin() {
               </span>
             )}
 
-            <button>Delete</button>
+            <DeletePostButton id={post.id} title={post.title} />
           </div>
         );
       })}

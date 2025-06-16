@@ -4,6 +4,8 @@ import { drizzleDb } from '@/db/drizzle';
 import { logColor } from '@/utils/log-color';
 import { asyncDelay } from '@/utils/async-delay';
 import { SIMULATE_WAIT_IN_MS } from '@/lib/constants';
+import { postsTable } from '@/db/drizzle/schemas';
+import { eq } from 'drizzle-orm';
 
 export class DrizzlePostRepository implements PostRepository {
 
@@ -58,5 +60,18 @@ export class DrizzlePostRepository implements PostRepository {
     }
 
     return post;
+  }
+
+  async deletePostById(id: string): Promise<boolean> {
+    await asyncDelay(SIMULATE_WAIT_IN_MS, true);
+    logColor('deletePostById', Date.now());
+
+    const post = await drizzleDb.delete(postsTable).where(eq(postsTable.id, id));
+
+    if(!post) {
+      throw new Error("Post não excluído.");
+    }
+
+    return true;
   }
 }

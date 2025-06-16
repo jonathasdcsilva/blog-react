@@ -1,5 +1,17 @@
 {
-  "node": {},
+  "node": {
+    "4068af085f9c23131bfa9278c3b19df59d46e84811": {
+      "workers": {
+        "app/admin/post/page": {
+          "moduleId": "[project]/.next-internal/server/app/admin/post/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/actions/post/delete-post-action.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": false
+        }
+      },
+      "layer": {
+        "app/admin/post/page": "action-browser"
+      }
+    }
+  },
   "edge": {},
   "encryptionKey": "yHxpfmJcdKJllFM7DgKOXOQEmIUXyZh7zBg9FsNe+rs="
 }
