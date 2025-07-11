@@ -1,11 +1,9 @@
 'use server';
 
 import { postRepository } from '@/repositories/post';
-import { logColor } from '@/utils/log-color';
 import { revalidateTag } from 'next/cache';
 
 export async function deletePostAction(id: string) {
-  logColor('' + id);
 
   if(!id || typeof(id) !== 'string') {
     return {
@@ -13,15 +11,19 @@ export async function deletePostAction(id: string) {
     };
   }
 
-  const post = await postRepository.findById(id).catch(() => undefined);
-
-  if(!post) {
+  let post;
+  try {
+    post = await postRepository.delete(id);
+  } catch (e: unknown) {
+    if (e instanceof Error) {
+      return {
+        error: e.message,
+      };
+    };
     return {
-      error: 'Post não encontrado!',
+      error: 'Erro desconhecido',
     };
   }
-
-  await postRepository.deletePostById(id).catch(() => undefined);
 
   revalidateTag('posts');
   revalidateTag(`post-${post.slug}`);

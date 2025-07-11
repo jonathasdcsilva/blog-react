@@ -10,6 +10,38 @@
       "layer": {
         "app/admin/post/page": "action-browser"
       }
+    },
+    "60507699b1c44b54f49f90c59ee98ff15cb6a186c3": {
+      "workers": {
+        "app/admin/post/[id]/page": {
+          "moduleId": "[project]/.next-internal/server/app/admin/post/[id]/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/actions/post/create-post-action.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/actions/upload/upload-image-action.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": false
+        },
+        "app/admin/post/new/page": {
+          "moduleId": "[project]/.next-internal/server/app/admin/post/new/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/actions/post/create-post-action.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/actions/upload/upload-image-action.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": false
+        }
+      },
+      "layer": {
+        "app/admin/post/[id]/page": "action-browser",
+        "app/admin/post/new/page": "action-browser"
+      }
+    },
+    "404fecd4379f0f6bb2c184d4d0628e476a92365d0e": {
+      "workers": {
+        "app/admin/post/[id]/page": {
+          "moduleId": "[project]/.next-internal/server/app/admin/post/[id]/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/actions/post/create-post-action.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/actions/upload/upload-image-action.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": false
+        },
+        "app/admin/post/new/page": {
+          "moduleId": "[project]/.next-internal/server/app/admin/post/new/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/actions/post/create-post-action.ts [app-rsc] (ecmascript)\", ACTIONS_MODULE1 => \"[project]/src/actions/upload/upload-image-action.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": false
+        }
+      },
+      "layer": {
+        "app/admin/post/[id]/page": "action-browser",
+        "app/admin/post/new/page": "action-browser"
+      }
     }
   },
   "edge": {},

@@ -4,56 +4,139 @@ import { Button } from '@/components/Button';
 import { InputCheckbox } from '@/components/InputCheckbox';
 import { InputText } from '@/components/InputText';
 import { MarkdownEditor } from '@/components/MarkdownEditor';
-import { useState } from 'react';
+import { useActionState, useEffect, useState } from 'react';
+import { ImageUploader } from '../ImageUploader';
+import { makePartialPublicPost, PublicPost } from '@/dto/post/dto';
+import { createPostAction } from '@/actions/post/create-post-action';
+import { toast } from 'react-toastify';
+import { updatePostAction } from '@/actions/post/update-post-action';
 
-export function ManagePostForm() {
-  const [contentValue, setContentValue] = useState('');
+type ManagePostFormCreateProps = {
+  mode: 'create';
+  publicPost?: PublicPost;
+};
+
+type ManagePostFormUpdateProps = {
+  mode: 'update';
+  publicPost?: PublicPost;
+};
+
+type ManagePostFormProps = ManagePostFormCreateProps | ManagePostFormUpdateProps;
+
+export function ManagePostForm(props: ManagePostFormProps) {
+
+  const {mode} = props;
+  let publicPost;
+  if(mode === 'update') {
+    publicPost = props.publicPost;
+  }
+
+  const actionsMap = {
+    update: updatePostAction,
+    create: createPostAction,
+  }
+
+  const initialState = {
+    formState: makePartialPublicPost(publicPost),
+    errors: [],
+  };
+
+  const [state, action, isPending] = useActionState(actionsMap[mode], initialState);
+
+  useEffect(() => {
+    if(state.errors.length > 0) {
+      toast.dismiss();
+      state.errors.forEach(error => toast.error(error));
+    }
+  }, [state.errors]);
+
+  useEffect(() => {
+    if(state.success) {
+      toast.dismiss();
+      toast.success('Post atualizado com sucesso')
+    }
+  }, [state.success]);
+
+  const { formState } = state;
+  const [contentValue, setContentValue] = useState(publicPost?.content || '');
+
+  useEffect(() => {
+    console.log(state.formState);
+  }, [state.formState]);
 
   return (
-     <form action='' className='mb-16'>
+     <form action={action} className='mb-16'>
       <div className='flex flex-col gap-6'>
         <InputText
-          labelText='Nome'
-          placeholder='Digite seu nome'
-          type='password'
+          labelText='ID'
+          name='id'
+          placeholder='ID gerado automaticamente'
+          type='text'
+          defaultValue={formState.id}
+          disabled={isPending}
+          readOnly
         />
-        <InputText labelText='Sobrenome' placeholder='Digite seu sobrenome' />
 
-        <InputCheckbox labelText='Sobrenome' />
+        <InputText
+          labelText='Slug'
+          name='slug'
+          placeholder='Slug gerada automaticamente'
+          type='text'
+          defaultValue={formState.slug}
+          disabled={isPending}
+          readOnly
+        />
+
+        <InputText
+          labelText='Autor'
+          name='author'
+          placeholder='Digite o nome do autor'
+          type='text'
+          defaultValue={formState.author}
+          disabled={isPending}
+        />
+
+        <InputText
+          labelText='Título'
+          name='title'
+          placeholder='Digite o título'
+          type='text'
+          defaultValue={formState.title}
+          disabled={isPending}
+        />
+
+        <InputText
+          labelText='Excerto'
+          name='excerpt'
+          placeholder='Digite o resumo'
+          type='text'
+          defaultValue={formState.excerpt}
+          disabled={isPending}
+        />
 
         <MarkdownEditor
           labelText='Conteúdo'
-          disabled={false}
+          disabled={isPending}
           textAreaName='content'
           value={contentValue}
           setValue={setContentValue}
         />
 
+        <ImageUploader disabled={isPending} />
+
         <InputText
-          disabled
-          labelText='Sobrenome'
-          placeholder='Digite seu sobrenome'
-          defaultValue='Olá mundo'
-        />
-        <InputText
-          disabled
-          labelText='Sobrenome'
-          placeholder='Digite seu sobrenome'
-        />
-        <InputText
-          labelText='Sobrenome'
-          placeholder='Digite seu sobrenome'
-          readOnly
-        />
-        <InputText
-          labelText='Sobrenome'
-          placeholder='Digite seu sobrenome'
-          defaultValue='Olá mundo'
-          readOnly
+          labelText='URL da imagem de capa'
+          name='coverImageUrl'
+          placeholder='Digite a url da imagem'
+          type='text'
+          defaultValue={formState.coverImageUrl}
+          disabled={isPending}
         />
 
+        <InputCheckbox labelText='Publicar?' name='published' type='checkbox' defaultChecked={formState.published} disabled={isPending} />
+
         <div className='mt-4'>
-          <Button type='submit'>Enviar</Button>
+          <Button disabled={isPending} type='submit'>Enviar</Button>
         </div>
       </div>
     </form>
